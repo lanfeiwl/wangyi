@@ -16,12 +16,28 @@ class LoginTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
     def test_loginsucess(self):
+        '''正常登录'''
         self.login("lanfeiwl","213250fei")
         t = self.driver.find_element_by_id("spnUid").text
         print("获取到我的账户:", t)
         self.assertEqual(t,"lanfeiwl@163.com")
     def test_nulluser(self):
+        '''帐号为空'''
         self.login('','')
         u=self.driver.find_element_by_css_selector(".ferrorhead").text
         print("错误提示:", u)
         self.assertEqual(u, "请输入帐号")
+    def test_nullpwd(self):
+        '''密码为空'''
+        self.login("lanfeiwl","")
+        pd=self.driver.find_element_by_css_selector(".ferrorhead").text
+        print("错误提示：",pd)
+        self.assertEqual(pd,"请输入密码")
+    def test_wrong(self):
+        '''帐号密码错误'''
+        self.login("lf","wd")
+        w=self.driver.find_element_by_css_selector(".ferrorhead").text
+        print("提示：",w)
+        self.assertEqual(w,"帐号或密码错误")
+if __name__=="__main__":
+    unittest.main()
